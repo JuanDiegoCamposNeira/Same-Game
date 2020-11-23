@@ -121,17 +121,66 @@ public class TableroJuego implements Tablero {
         return 0;
     }
 
-    public void actualizarTablero(int fila, int columna, int color, int[][] tablero) { // Richard
-        // TO - DO
+  public void actualizarTablero(int fila, int columna, int color) { // Richard
+        if(tablero[fila][columna]!=-1){
+	tablero[fila][columna]=-1;
+		}
+		if(fila>0){
+			if(tablero[fila-1][columna] != -1 && color == tablero[fila-1][columna]){
+				actualizarTablero(fila-1, columna, color);
+			}
+		}
+		if(fila+1<Filas){
+			if(tablero[fila+1][columna] != -1 && color == tablero[fila+1][columna]){
+				actualizarTablero(fila+1, columna, color);
+			}
+		}
+		if(columna>0){
+			if(tablero[fila][columna-1] != -1 && color == tablero[fila][columna-1]){
+				actualizarTablero(fila, columna-1, color);
+			}
+		}
+		if(columna+1<Columnas){
+			if(tablero[fila][columna+1] != -1 && color == tablero[fila][columna+1]){
+				actualizarTablero(fila, columna+1, color);
+			}
+		}
+
     }
 
-    public void correrIzquierda(int[][] tablero) { // Richard
-        // TO - DO
+    public void correrIzquierda() { // Richard
+        boolean correr= false;
+		for(int j = 0; j < Columnas-1; j++){//TAL VEZ COLMAX-1
+			correr = true;
+			for(int i = 0; i < Filas; i++){		
+				if(tablero[i][j]!=-1){
+					correr = false;
+					break;
+				}
+			}
+			if(correr){
+          for(int i = 0; i < Filas; i++){
+             tablero[i][j]= tablero[i][j+1];
+             tablero[i][j+1]=-1;	
+				}
+			}
+		}
     }
 
-    public void correrAbajo(int[][] tablero) { // Richard
-        // TO - DO
-    }
+  public void correrAbajo() { // Richard
+        boolean bandera = true;
+		while(bandera){
+			bandera = false;
+			for(int j = 0; j < Columnas; j++){
+				for (int i = 0; i <Filas-1; i++) {
+           if(tablero[i][j]==-1 && tablero[i-1][j]!=-1){
+               tablero[i][j]=tablero[i-1][j];
+               tablero[i-1][j]=-1;
+              }
+				}
+			}
+		}
+  }
 
     public int colorMaximo(int[] cantidadPorColor) { // Gabriel
 
@@ -147,8 +196,18 @@ public class TableroJuego implements Tablero {
         return indice;
     }
 
-    public int cantidadColor(int[][] tablero) { // Richard
-        return 0;
+  public int []cantidadColor() { // Richard
+     int []resp=new int[NumeroColores];
+         for (int i = 0; i < tablero.length; i++) {//filas
+            for (int j = 0; j < tablero[i].length; j++) {//columnas
+              for(int k=0;k<NumeroColores;k++){
+                  if(k==tablero[i][j]){
+                  resp[k]++;
+                  }  
+              }   
+            }
+        }
+         return resp;
     }
 
     @Override
