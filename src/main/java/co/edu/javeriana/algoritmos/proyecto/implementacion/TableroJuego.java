@@ -14,19 +14,19 @@ public class TableroJuego implements Tablero {
     private int NumeroColores;
 
     /**
-     * Constructores 
+     * Constructores
      */
     /*
-    Constructor para probar m'etodo casillaValida()
+     * Constructor para probar m'etodo : - casillaValida() - vecinosCasilla()
+     */
     public TableroJuego() {
-        this.tablero = new int[][]{{1, 2, 1, 3, 4}, 
-                                   {2, 1, 2, 3, 4}, 
-                                   {2, 2, 1, 1, 4},
-                                   {4, 3, 2, 1, 2} }; 
-        this.Columnas = 5; 
-        this.Filas = 4; 
+        this.tablero = new int[][] { { 1, 2, 1, 3, 4 }, 
+                                     { 2, 1, 2, 3, 4 }, 
+                                     { 2, 2, 1, 1, 4 }, 
+                                     { 4, 3, 2, 1, 2 } };
+        this.Columnas = 5;
+        this.Filas = 4;
     }
-    */
 
     /**
      * Métodos
@@ -38,69 +38,86 @@ public class TableroJuego implements Tablero {
 
     @Override
     public int colorCasilla(int i, int j) {
-        return this.tablero[i][j];  
+        return this.tablero[i][j];
     }
 
     @Override
     public int[][] coloresTablero() {
-        // TO - DO 
-        return null; 
+        // TO - DO
+        return null;
     }
 
     // O(1), validación en tiempo constante
     public boolean casillaValida(Casilla casilla) { // Juan Diego
-        // Verificar vecinos, si al menos un vecino es del mismo color, se retorna verdadero 
-        int fila = casilla.getFila(); 
-        int columna = casilla.getColumna(); 
-        int colorActual = this.colorCasilla(fila, columna); 
+        // Verificar vecinos, si al menos un vecino es del mismo color, se retorna
+        // verdadero
+        int fila = casilla.getFila();
+        int columna = casilla.getColumna();
+        int colorActual = this.colorCasilla(fila, columna);
         // Vecino izquierdo, [i][j - 1]
-        // Se verifica que la casilla actual no esté en la primera columna 
+        // Se verifica que la casilla actual no esté en la primera columna
         if (columna > 0 && colorActual == this.tablero[fila][columna - 1]) {
-            // System.out.print("<"); 
-            return true;  
+            // System.out.print("<");
+            return true;
         }
         // Vecino derecho [i][j + 1]
         // Se verifica que la columna no sea la última
         if (columna < this.Columnas - 1 && colorActual == this.tablero[fila][columna + 1]) {
-            // System.out.print(">"); 
-            return true; 
+            // System.out.print(">");
+            return true;
         }
-        // Vecino superior, [i - 1][j] 
-        // Se verifica que la casilla actual no esté en la primera fila 
+        // Vecino superior, [i - 1][j]
+        // Se verifica que la casilla actual no esté en la primera fila
         if (fila > 0 && colorActual == this.tablero[fila - 1][columna]) {
             // System.out.print("^");
-            return true; 
+            return true;
         }
-        // Vecino inferior, [i + 1][j] 
+        // Vecino inferior, [i + 1][j]
         if (fila < this.Filas - 1 && colorActual == this.tablero[fila + 1][columna]) {
             // System.out.print("v");
-            return true; 
+            return true;
         }
-        // Si no encuentra ninguna coincidencia, la casilla no tiene vecinos del mismo color
-        return false; 
+        // Si no encuentra ninguna coincidencia, la casilla no tiene vecinos del mismo
+        // color
+        return false;
     }
 
-    public int vecinosCasilla(int fila, int columna, int[][] visitados, int[][] tablero, int color) { // Gabriel
-        if (fila > 3)
-            return 0;
-        if (columna > 3)
-            return 0;
-        if (fila < 0)
-            return 0;
-        if (columna < 0)
+    // O(n * m) 
+    public int vecinosCasilla(Casilla casilla) { // Gabriel
+        // Si la casilla no es valida, quiere decir que no tiene vecinos
+        if (!this.casillaValida(casilla))
             return 0;
 
-        if (visitados[fila][columna] == -1)
-            return 0;
+        // Se crea un arreglo que contiene las posiciones del tablero que ya se
+        // visitaron. Al inicio ninguna posici'on se ha visitado
+        int[][] visitados = new int[this.Filas][this.Columnas];
+        // Si la casilla es valida, contar cuantos vecinos tiene
+        int color = this.colorCasilla(casilla.getFila(), casilla.getColumna());
+        int cantidadVecinosCasila = vecinosCasillaAux(casilla, color, visitados);
+        // Retornar la cantidad de vecinos de la casilla
+        return cantidadVecinosCasila;
+    }
 
+    // O(n * m)
+    public int vecinosCasillaAux(Casilla casilla, int colorComparacion, int[][] visitados) {
+        // Obtener la posici'on en el tablero de la casilla
+        int fila = casilla.getFila();
+        int columna = casilla.getColumna();
+        // Verificar que la posici'on de la casilla sea v'alida
+        if (fila < 0 || columna < 0 || fila >= this.Filas || columna >= this.Columnas || visitados[fila][columna] == -1)
+            return 0;
+        // De ser valida la posici'on, marcarla como visitada
         visitados[fila][columna] = -1;
-
-        if (tablero[fila][columna] == color)
-            return (1 + (vecinosCasilla(fila, columna + 1, visitados, tablero, color))
-                    + (vecinosCasilla(fila, columna - 1, visitados, tablero, color))
-                    + (vecinosCasilla(fila + 1, columna, visitados, tablero, color))
-                    + (vecinosCasilla(fila - 1, columna + 1, visitados, tablero, color)));
-
+        // Evaluar recursivamente sus vecinos si la casilla es del mismo color
+        if (this.colorCasilla(fila, columna) == colorComparacion) {
+            int vecinosIzquierda = vecinosCasillaAux(new Casilla(fila, columna - 1), colorComparacion, visitados);
+            int vecinosDerecha = vecinosCasillaAux(new Casilla(fila, columna + 1), colorComparacion, visitados);
+            int vecinosSuperior = vecinosCasillaAux(new Casilla(fila - 1, columna), colorComparacion, visitados);
+            int vecinosInferior = vecinosCasillaAux(new Casilla(fila + 1, columna), colorComparacion, visitados);
+            // Retornar la cantidad de vecinos +1, que representa la casilla actual 
+            return (1 + vecinosDerecha + vecinosIzquierda + vecinosInferior + vecinosSuperior);
+        }
+        // Retornar cero si la casilla acutual no tiene el color de colorComparacion
         return 0;
     }
 
@@ -155,41 +172,40 @@ public class TableroJuego implements Tablero {
         return Columnas;
     }
 
-
-
     /**
-     * Pruebas para el tablero 
+     * Pruebas para el tablero
      */
     public void generarTableroPrueba() {
         // Generar un n'umero aleatorio entre 2 y 50 para n y m
-        int maximo = 49; 
-        int minimo = 2; 
-        int n = (int)(Math.random() * (maximo - minimo + 1) + minimo);
-        int m = (int)(Math.random() * (maximo - minimo + 1) + minimo);
-        System.out.println("n {" + n + "}  m {" + m + "}"); 
-        // Generar un numero aleatorio de colores para el tablero entre 4 y el numero de casillas 
-        minimo = 4; 
-        maximo = (n * m) - minimo; 
-        // int k = (int)(Math.random() * (maximo - minimo + 1) + minimo); 
-        int k = 5; // Por simplicidad de las pruebas, tendr'a 5 colores 
-        System.out.println("k {" + k + "}"); 
+        int maximo = 49;
+        int minimo = 2;
+        int n = (int) (Math.random() * (maximo - minimo + 1) + minimo);
+        int m = (int) (Math.random() * (maximo - minimo + 1) + minimo);
+        System.out.println("n {" + n + "}  m {" + m + "}");
+        // Generar un numero aleatorio de colores para el tablero entre 4 y el numero de
+        // casillas
+        minimo = 4;
+        maximo = (n * m) - minimo;
+        // int k = (int)(Math.random() * (maximo - minimo + 1) + minimo);
+        int k = 5; // Por simplicidad de las pruebas, tendr'a 5 colores
+        System.out.println("k {" + k + "}");
 
         // Crear el tablero
-        int tablero[][] = new int[n][m]; 
-        // Llenar el tablero aleatoriamente 
-        minimo = 1; 
-        maximo = k; 
+        int tablero[][] = new int[n][m];
+        // Llenar el tablero aleatoriamente
+        minimo = 1;
+        maximo = k;
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < m; j++) {
-                tablero[i][j] = (int)(Math.random() * (maximo - minimo + 1) + minimo); 
+                tablero[i][j] = (int) (Math.random() * (maximo - minimo + 1) + minimo);
             }
         }
-        // Imprimir tablero 
+        // Imprimir tablero
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < m; j++) {
-                System.out.print(tablero[i][j] + " " ); 
+                System.out.print(tablero[i][j] + " ");
             }
-            System.out.println(); 
+            System.out.println();
         }
 
     }
