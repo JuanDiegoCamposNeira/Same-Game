@@ -5,11 +5,32 @@ import co.edu.javeriana.algoritmos.proyecto.Tablero;
 
 public class TableroJuego implements Tablero {
 
+    /**
+     * Atributos
+     */
     private int[][] tablero;
     private int Filas;
     private int Columnas;
     private int NumeroColores;
 
+    /**
+     * Constructores 
+     */
+    /*
+    Constructor para probar m'etodo casillaValida()
+    public TableroJuego() {
+        this.tablero = new int[][]{{1, 2, 1, 3, 4}, 
+                                   {2, 1, 2, 3, 4}, 
+                                   {2, 2, 1, 1, 4},
+                                   {4, 3, 2, 1, 2} }; 
+        this.Columnas = 5; 
+        this.Filas = 4; 
+    }
+    */
+
+    /**
+     * Métodos
+     */
     @Override
     public int efectuarJugada(Casilla jugada) throws IllegalArgumentException { // Ultima en implementar
         return 0;
@@ -17,8 +38,7 @@ public class TableroJuego implements Tablero {
 
     @Override
     public int colorCasilla(int i, int j) {
-        // TO-DO
-        return 0; 
+        return this.tablero[i][j];  
     }
 
     @Override
@@ -27,9 +47,37 @@ public class TableroJuego implements Tablero {
         return null; 
     }
 
+    // O(1), validación en tiempo constante
     public boolean casillaValida(Casilla casilla) { // Juan Diego
-        // TO - DO 
-        return true;
+        // Verificar vecinos, si al menos un vecino es del mismo color, se retorna verdadero 
+        int fila = casilla.getFila(); 
+        int columna = casilla.getColumna(); 
+        int colorActual = this.colorCasilla(fila, columna); 
+        // Vecino izquierdo, [i][j - 1]
+        // Se verifica que la casilla actual no esté en la primera columna 
+        if (columna > 0 && colorActual == this.tablero[fila][columna - 1]) {
+            // System.out.print("<"); 
+            return true;  
+        }
+        // Vecino derecho [i][j + 1]
+        // Se verifica que la columna no sea la última
+        if (columna < this.Columnas - 1 && colorActual == this.tablero[fila][columna + 1]) {
+            // System.out.print(">"); 
+            return true; 
+        }
+        // Vecino superior, [i - 1][j] 
+        // Se verifica que la casilla actual no esté en la primera fila 
+        if (fila > 0 && colorActual == this.tablero[fila - 1][columna]) {
+            // System.out.print("^");
+            return true; 
+        }
+        // Vecino inferior, [i + 1][j] 
+        if (fila < this.Filas - 1 && colorActual == this.tablero[fila + 1][columna]) {
+            // System.out.print("v");
+            return true; 
+        }
+        // Si no encuentra ninguna coincidencia, la casilla no tiene vecinos del mismo color
+        return false; 
     }
 
     public int vecinosCasilla(int fila, int columna, int[][] visitados, int[][] tablero, int color) { // Gabriel
@@ -144,7 +192,6 @@ public class TableroJuego implements Tablero {
             System.out.println(); 
         }
 
-        
     }
 
 }
