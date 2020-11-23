@@ -20,10 +20,7 @@ public class TableroJuego implements Tablero {
      * Constructor para probar m'etodo : - casillaValida() - vecinosCasilla()
      */
     public TableroJuego() {
-        this.tablero = new int[][] { { 1, 2, 1, 3, 4 }, 
-                                     { 2, 1, 2, 3, 4 }, 
-                                     { 2, 2, 1, 1, 4 }, 
-                                     { 4, 3, 2, 1, 2 } };
+        this.tablero = new int[][] { { 1, 2, 1, 3, 4 }, { 2, 1, 2, 3, 4 }, { 2, 2, 1, 1, 4 }, { 4, 3, 2, 1, 2 } };
         this.Columnas = 5;
         this.Filas = 4;
     }
@@ -82,7 +79,7 @@ public class TableroJuego implements Tablero {
         return false;
     }
 
-    // O(n * m) 
+    // O(n * m)
     public int vecinosCasilla(Casilla casilla) { // Gabriel
         // Si la casilla no es valida, quiere decir que no tiene vecinos
         if (!this.casillaValida(casilla))
@@ -114,73 +111,73 @@ public class TableroJuego implements Tablero {
             int vecinosDerecha = vecinosCasillaAux(new Casilla(fila, columna + 1), colorComparacion, visitados);
             int vecinosSuperior = vecinosCasillaAux(new Casilla(fila - 1, columna), colorComparacion, visitados);
             int vecinosInferior = vecinosCasillaAux(new Casilla(fila + 1, columna), colorComparacion, visitados);
-            // Retornar la cantidad de vecinos +1, que representa la casilla actual 
+            // Retornar la cantidad de vecinos +1, que representa la casilla actual
             return (1 + vecinosDerecha + vecinosIzquierda + vecinosInferior + vecinosSuperior);
         }
         // Retornar cero si la casilla acutual no tiene el color de colorComparacion
         return 0;
     }
 
-  public void actualizarTablero(int fila, int columna, int color) { // Richard
-        if(tablero[fila][columna]!=-1){
-	tablero[fila][columna]=-1;
-		}
-		if(fila>0){
-			if(tablero[fila-1][columna] != -1 && color == tablero[fila-1][columna]){
-				actualizarTablero(fila-1, columna, color);
-			}
-		}
-		if(fila+1<Filas){
-			if(tablero[fila+1][columna] != -1 && color == tablero[fila+1][columna]){
-				actualizarTablero(fila+1, columna, color);
-			}
-		}
-		if(columna>0){
-			if(tablero[fila][columna-1] != -1 && color == tablero[fila][columna-1]){
-				actualizarTablero(fila, columna-1, color);
-			}
-		}
-		if(columna+1<Columnas){
-			if(tablero[fila][columna+1] != -1 && color == tablero[fila][columna+1]){
-				actualizarTablero(fila, columna+1, color);
-			}
-		}
+    public void actualizarTablero(int fila, int columna, int color) { // Richard
+        if (tablero[fila][columna] != -1) {
+            tablero[fila][columna] = -1;
+        }
+        if (fila > 0) {
+            if (tablero[fila - 1][columna] != -1 && color == tablero[fila - 1][columna]) {
+                actualizarTablero(fila - 1, columna, color);
+            }
+        }
+        if (fila + 1 < Filas) {
+            if (tablero[fila + 1][columna] != -1 && color == tablero[fila + 1][columna]) {
+                actualizarTablero(fila + 1, columna, color);
+            }
+        }
+        if (columna > 0) {
+            if (tablero[fila][columna - 1] != -1 && color == tablero[fila][columna - 1]) {
+                actualizarTablero(fila, columna - 1, color);
+            }
+        }
+        if (columna + 1 < Columnas) {
+            if (tablero[fila][columna + 1] != -1 && color == tablero[fila][columna + 1]) {
+                actualizarTablero(fila, columna + 1, color);
+            }
+        }
 
     }
 
     public void correrIzquierda() { // Richard
-        boolean correr= false;
-		for(int j = 0; j < Columnas-1; j++){//TAL VEZ COLMAX-1
-			correr = true;
-			for(int i = 0; i < Filas; i++){		
-				if(tablero[i][j]!=-1){
-					correr = false;
-					break;
-				}
-			}
-			if(correr){
-          for(int i = 0; i < Filas; i++){
-             tablero[i][j]= tablero[i][j+1];
-             tablero[i][j+1]=-1;	
-				}
-			}
-		}
+        boolean correr = false;
+        for (int j = 0; j < Columnas - 1; j++) {// TAL VEZ COLMAX-1
+            correr = true;
+            for (int i = 0; i < Filas; i++) {
+                if (tablero[i][j] != -1) {
+                    correr = false;
+                    break;
+                }
+            }
+            if (correr) {
+                for (int i = 0; i < Filas; i++) {
+                    tablero[i][j] = tablero[i][j + 1];
+                    tablero[i][j + 1] = -1;
+                }
+            }
+        }
     }
 
-  public void correrAbajo() { // Richard
+    public void correrAbajo() { // Richard
         boolean bandera = true;
-		while(bandera){
-			bandera = false;
-			for(int j = 0; j < Columnas; j++){
-				for (int i = 0; i <Filas-1; i++) {
-           if(tablero[i][j]==-1 && tablero[i-1][j]!=-1){
-               tablero[i][j]=tablero[i-1][j];
-               tablero[i-1][j]=-1;
-              }
-				}
-			}
-		}
-  }
+        while (bandera) {
+            bandera = false;
+            for (int j = 0; j < Columnas; j++) {
+                for (int i = 0; i < Filas - 1; i++) {
+                    if (tablero[i][j] == -1 && tablero[i - 1][j] != -1) {
+                        tablero[i][j] = tablero[i - 1][j];
+                        tablero[i - 1][j] = -1;
+                    }
+                }
+            }
+        }
+    }
 
     public int colorMaximo(int[] cantidadPorColor) { // Gabriel
 
@@ -196,18 +193,18 @@ public class TableroJuego implements Tablero {
         return indice;
     }
 
-  public int []cantidadColor() { // Richard
-     int []resp=new int[NumeroColores];
-         for (int i = 0; i < tablero.length; i++) {//filas
-            for (int j = 0; j < tablero[i].length; j++) {//columnas
-              for(int k=0;k<NumeroColores;k++){
-                  if(k==tablero[i][j]){
-                  resp[k]++;
-                  }  
-              }   
+    public int[] cantidadColor() { // Richard
+        int[] resp = new int[NumeroColores];
+        for (int i = 0; i < tablero.length; i++) {// filas
+            for (int j = 0; j < tablero[i].length; j++) {// columnas
+                for (int k = 0; k < NumeroColores; k++) {
+                    if (k == tablero[i][j]) {
+                        resp[k]++;
+                    }
+                }
             }
         }
-         return resp;
+        return resp;
     }
 
     @Override
