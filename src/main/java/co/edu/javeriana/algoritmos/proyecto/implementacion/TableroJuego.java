@@ -1,88 +1,95 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package co.edu.javeriana.algoritmos.proyecto.implementacion;
 
 import co.edu.javeriana.algoritmos.proyecto.Casilla;
 import co.edu.javeriana.algoritmos.proyecto.Tablero;
 
-/**
- *
- * @author DANIEL MONSALVE
- */
-public class TableroJuego implements Tablero{
-    
-    private int [][] tablero;
+public class TableroJuego implements Tablero {
+
+    private int[][] tablero;
     private int Filas;
     private int Columnas;
     private int NumeroColores;
-    
+
     @Override
     public int efectuarJugada(Casilla jugada) throws IllegalArgumentException { // Ultima en implementar
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return 0;
     }
-    
+
     @Override
     public int colorCasilla(int i, int j) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        // TO-DO
+        return 0; 
     }
 
     @Override
     public int[][] coloresTablero() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        // TO - DO 
+        return null; 
     }
-    public boolean casillaValida(Casilla casilla){ // Juan Diego
+
+    public boolean casillaValida(Casilla casilla) { // Juan Diego
+        // TO - DO 
         return true;
     }
-    public int vecinosCasilla(int fila, int columna, int [][] visitados, int [][] tablero, int color){ // Gabriel
-        if(fila > 3 )return 0;
-        if(columna > 3) return 0;
-        if(fila < 0) return 0;
-        if(columna < 0) return 0;
-        
-        if(visitados[fila][columna] == -1 ) return 0;
-                
-        visitados[fila][columna] = -1 ;
-        
-        if(tablero[fila][columna] == color)
-            return (1+(vecinosCasilla(fila,columna+1,visitados,tablero,color))+
-                    (vecinosCasilla(fila,columna-1,visitados,tablero,color))+ 
-                    (vecinosCasilla(fila+1,columna,visitados,tablero,color))+
-                    (vecinosCasilla(fila-1,columna+1,visitados,tablero,color)));
+
+    public int vecinosCasilla(int fila, int columna, int[][] visitados, int[][] tablero, int color) { // Gabriel
+        if (fila > 3)
+            return 0;
+        if (columna > 3)
+            return 0;
+        if (fila < 0)
+            return 0;
+        if (columna < 0)
+            return 0;
+
+        if (visitados[fila][columna] == -1)
+            return 0;
+
+        visitados[fila][columna] = -1;
+
+        if (tablero[fila][columna] == color)
+            return (1 + (vecinosCasilla(fila, columna + 1, visitados, tablero, color))
+                    + (vecinosCasilla(fila, columna - 1, visitados, tablero, color))
+                    + (vecinosCasilla(fila + 1, columna, visitados, tablero, color))
+                    + (vecinosCasilla(fila - 1, columna + 1, visitados, tablero, color)));
 
         return 0;
     }
-    public void actualizarTablero(int fila, int columna, int color, int [][] tablero){ // Richard
-        
+
+    public void actualizarTablero(int fila, int columna, int color, int[][] tablero) { // Richard
+        // TO - DO
     }
-    public void correrIzquierda(int [][] tablero){ // Richard
-        
+
+    public void correrIzquierda(int[][] tablero) { // Richard
+        // TO - DO
     }
-    public void correrAbajo(int [][] tablero){ // Richard
-        
+
+    public void correrAbajo(int[][] tablero) { // Richard
+        // TO - DO
     }
-    public int colorMaximo(int [] cantidadPorColor){ // Gabriel
-        
-        int mayor=0, indice = 0;
-        
-        for(int i=0; i<10;i++){
-            if(cantidadPorColor[i] > mayor){
+
+    public int colorMaximo(int[] cantidadPorColor) { // Gabriel
+
+        int mayor = 0, indice = 0;
+
+        for (int i = 0; i < 10; i++) {
+            if (cantidadPorColor[i] > mayor) {
                 indice = i;
                 mayor = cantidadPorColor[i];
             }
         }
-        
+
         return indice;
     }
-    public int cantidadColor(int [][] tablero){ // Richard
+
+    public int cantidadColor(int[][] tablero) { // Richard
         return 0;
     }
-    
+
     @Override
     public int simularJugada(Casilla jugada) throws IllegalArgumentException {
-        throw new UnsupportedOperationException("No la usamos");
+        // TO - DO
+        return 0;
     }
 
     @Override
@@ -99,4 +106,45 @@ public class TableroJuego implements Tablero{
     public int getColumnas() {
         return Columnas;
     }
+
+
+
+    /**
+     * Pruebas para el tablero 
+     */
+    public void generarTableroPrueba() {
+        // Generar un n'umero aleatorio entre 2 y 50 para n y m
+        int maximo = 49; 
+        int minimo = 2; 
+        int n = (int)(Math.random() * (maximo - minimo + 1) + minimo);
+        int m = (int)(Math.random() * (maximo - minimo + 1) + minimo);
+        System.out.println("n {" + n + "}  m {" + m + "}"); 
+        // Generar un numero aleatorio de colores para el tablero entre 4 y el numero de casillas 
+        minimo = 4; 
+        maximo = (n * m) - minimo; 
+        // int k = (int)(Math.random() * (maximo - minimo + 1) + minimo); 
+        int k = 5; // Por simplicidad de las pruebas, tendr'a 5 colores 
+        System.out.println("k {" + k + "}"); 
+
+        // Crear el tablero
+        int tablero[][] = new int[n][m]; 
+        // Llenar el tablero aleatoriamente 
+        minimo = 1; 
+        maximo = k; 
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                tablero[i][j] = (int)(Math.random() * (maximo - minimo + 1) + minimo); 
+            }
+        }
+        // Imprimir tablero 
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                System.out.print(tablero[i][j] + " " ); 
+            }
+            System.out.println(); 
+        }
+
+        
+    }
+
 }
