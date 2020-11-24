@@ -169,7 +169,7 @@ public class TableroJuego implements Tablero {
         while (bandera) {
             bandera = false;
             for (int j = 0; j < Columnas; j++) {
-                for (int i = 0; i < Filas - 1; i++) {
+                for (int i = Filas-1; i > 0; i--) {
                     if (tablero[i][j] == -1 && tablero[i - 1][j] != -1) {
                         tablero[i][j] = tablero[i - 1][j];
                         tablero[i - 1][j] = -1;
