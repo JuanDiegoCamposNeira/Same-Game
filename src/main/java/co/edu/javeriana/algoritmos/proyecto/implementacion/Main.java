@@ -24,11 +24,22 @@ public class Main {
          * Prueba para vecinosCasilla()
          */
         TableroJuego tablero = new TableroJuego();
+        /*
+         * for (int i = 0; i < 4; i++) { for (int j = 0; j < 5; j++) {
+         * System.out.print(tablero.vecinosCasilla(new Casilla(i, j)) + " "); }
+         * System.out.println(); }
+         */
+        /**
+         * Prueba para efecuarJugada()
+         */
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 5; j++) {
-                System.out.print(tablero.vecinosCasilla(new Casilla(i, j)) + " ");
+                tablero.imprimirTablero();
+                System.out.print(tablero.efectuarJugada(new Casilla(i, j)) + " ");
+                tablero.imprimirTablero();
             }
             System.out.println();
         }
+
     }
 }

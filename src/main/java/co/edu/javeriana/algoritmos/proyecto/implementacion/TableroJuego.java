@@ -20,7 +20,10 @@ public class TableroJuego implements Tablero {
      * Constructor para probar m'etodo : - casillaValida() - vecinosCasilla()
      */
     public TableroJuego() {
-        this.tablero = new int[][] { { 1, 2, 1, 3, 4 }, { 2, 1, 2, 3, 4 }, { 2, 2, 1, 1, 4 }, { 4, 3, 2, 1, 2 } };
+        this.tablero = new int[][] { { 1, 2, 1, 3, 4 }, 
+                                     { 2, 1, 2, 3, 4 }, 
+                                     { 2, 2, 1, 1, 4 }, 
+                                     { 4, 3, 2, 1, 2 } };
         this.Columnas = 5;
         this.Filas = 4;
     }
@@ -29,8 +32,30 @@ public class TableroJuego implements Tablero {
      * Métodos
      */
     @Override
-    public int efectuarJugada(Casilla jugada) throws IllegalArgumentException { // Ultima en implementar
-        return 0;
+    public int efectuarJugada(Casilla jugada) throws IllegalArgumentException {
+        // Si la casilla no es valida, arrojar excepción
+        //if (!this.casillaValida(jugada))
+          //  throw new IllegalArgumentException();
+
+        // De lo contrario, evaluar los vecinos y retornar el puntaje de la jugada
+        int vecinos = this.vecinosCasilla(jugada);
+
+        // Calcular el valor de la jugada
+        int valorJugada = (int) Math.pow(vecinos - 2, 2);
+
+        // Una vez se calcula la jugada, se actualiza (marcar -1 en cada posicion
+        // correspondiente) el tablero
+        int fila = jugada.getFila();
+        int columna = jugada.getColumna();
+        int color = this.colorCasilla(fila, columna);
+        this.actualizarTablero(fila, columna, color);
+
+        // Correr las filas y las columnas del tablero
+        //this.correrAbajo();
+        //this.correrIzquierda();
+
+        // Retornar el valor de la jugada
+        return valorJugada;
     }
 
     @Override
@@ -46,10 +71,15 @@ public class TableroJuego implements Tablero {
 
     // O(1), validación en tiempo constante
     public boolean casillaValida(Casilla casilla) { // Juan Diego
-        // Verificar vecinos, si al menos un vecino es del mismo color, se retorna
-        // verdadero
+        // Obtener la posici'on de la casilla
         int fila = casilla.getFila();
         int columna = casilla.getColumna();
+        // Verificar los l'imites de la casilla
+        if (fila < 0 || columna < 0 || fila >= this.Filas || columna >= this.Columnas) {
+            return false;
+        }
+        // Si la casilla es valida verificar vecinos, si al menos un vecino es del mismo
+        // color, se retorna verdadero
         int colorActual = this.colorCasilla(fila, columna);
         // Vecino izquierdo, [i][j - 1]
         // Se verifica que la casilla actual no esté en la primera columna
@@ -119,26 +149,26 @@ public class TableroJuego implements Tablero {
     }
 
     public void actualizarTablero(int fila, int columna, int color) { // Richard
-        if (tablero[fila][columna] != -1) {
-            tablero[fila][columna] = -1;
+        if (this.tablero[fila][columna] != -1) {
+            this.tablero[fila][columna] = -1;
         }
         if (fila > 0) {
-            if (tablero[fila - 1][columna] != -1 && color == tablero[fila - 1][columna]) {
+            if (this.tablero[fila - 1][columna] != -1 && color == this.tablero[fila - 1][columna]) {
                 actualizarTablero(fila - 1, columna, color);
             }
         }
         if (fila + 1 < Filas) {
-            if (tablero[fila + 1][columna] != -1 && color == tablero[fila + 1][columna]) {
+            if (this.tablero[fila + 1][columna] != -1 && color == this.tablero[fila + 1][columna]) {
                 actualizarTablero(fila + 1, columna, color);
             }
         }
         if (columna > 0) {
-            if (tablero[fila][columna - 1] != -1 && color == tablero[fila][columna - 1]) {
+            if (this.tablero[fila][columna - 1] != -1 && color == this.tablero[fila][columna - 1]) {
                 actualizarTablero(fila, columna - 1, color);
             }
         }
         if (columna + 1 < Columnas) {
-            if (tablero[fila][columna + 1] != -1 && color == tablero[fila][columna + 1]) {
+            if (this.tablero[fila][columna + 1] != -1 && color == this.tablero[fila][columna + 1]) {
                 actualizarTablero(fila, columna + 1, color);
             }
         }
@@ -264,6 +294,16 @@ public class TableroJuego implements Tablero {
             System.out.println();
         }
 
+    }
+
+    public void imprimirTablero() {
+        System.out.println(); 
+        for (int i = 0; i < this.Filas; i++) {
+            for (int j = 0; j < this.Columnas; j++) { 
+                System.out.print(this.tablero[i][j] + " ");
+            }
+            System.out.println(); 
+        }
     }
 
 }
