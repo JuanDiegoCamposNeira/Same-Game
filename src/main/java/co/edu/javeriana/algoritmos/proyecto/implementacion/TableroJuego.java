@@ -203,6 +203,7 @@ public class TableroJuego implements Tablero {
                     if (tablero[i][j] == -1 && tablero[i - 1][j] != -1) {
                         tablero[i][j] = tablero[i - 1][j];
                         tablero[i - 1][j] = -1;
+                        bandera=true;
                     }
                 }
             }
