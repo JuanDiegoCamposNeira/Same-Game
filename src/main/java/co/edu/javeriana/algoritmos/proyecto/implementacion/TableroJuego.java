@@ -16,16 +16,8 @@ public class TableroJuego implements Tablero {
     /**
      * Constructores
      */
-    /*
-     * Constructor para probar m'etodo : - casillaValida() - vecinosCasilla()
-     */
     public TableroJuego() {
-        this.tablero = new int[][] { { 1, 2, 1, 3, 4 }, 
-                                     { 2, 1, 2, 3, 4 }, 
-                                     { 2, 2, 1, 1, 4 }, 
-                                     { 4, 3, 2, 1, 2 } };
-        this.Columnas = 5;
-        this.Filas = 4;
+        generarTablero();
     }
 
     /**
@@ -34,8 +26,8 @@ public class TableroJuego implements Tablero {
     @Override
     public int efectuarJugada(Casilla jugada) throws IllegalArgumentException {
         // Si la casilla no es valida, arrojar excepción
-        //if (!this.casillaValida(jugada))
-          //  throw new IllegalArgumentException();
+        if (!this.casillaValida(jugada))
+            throw new IllegalArgumentException();
 
         // De lo contrario, evaluar los vecinos y retornar el puntaje de la jugada
         int vecinos = this.vecinosCasilla(jugada);
@@ -51,8 +43,8 @@ public class TableroJuego implements Tablero {
         this.actualizarTablero(fila, columna, color);
 
         // Correr las filas y las columnas del tablero
-        //this.correrAbajo();
-        //this.correrIzquierda();
+        this.correrAbajo();
+        this.correrIzquierda();
 
         // Retornar el valor de la jugada
         return valorJugada;
@@ -65,8 +57,7 @@ public class TableroJuego implements Tablero {
 
     @Override
     public int[][] coloresTablero() {
-        // TO - DO
-        return null;
+        return this.tablero;
     }
 
     // O(1), validación en tiempo constante
@@ -75,9 +66,11 @@ public class TableroJuego implements Tablero {
         int fila = casilla.getFila();
         int columna = casilla.getColumna();
         // Verificar los l'imites de la casilla
-        if (fila < 0 || columna < 0 || fila >= this.Filas || columna >= this.Columnas) {
+        if (fila < 0 || columna < 0 || fila >= this.Filas || columna >= this.Columnas){
             return false;
         }
+        if(this.colorCasilla(fila, columna) == -1)
+            return false;
         // Si la casilla es valida verificar vecinos, si al menos un vecino es del mismo
         // color, se retorna verdadero
         int colorActual = this.colorCasilla(fila, columna);
@@ -210,34 +203,6 @@ public class TableroJuego implements Tablero {
         }
     }
 
-    public int colorMaximo(int[] cantidadPorColor) { // Gabriel
-
-        int mayor = 0, indice = 0;
-
-        for (int i = 0; i < 10; i++) {
-            if (cantidadPorColor[i] > mayor) {
-                indice = i;
-                mayor = cantidadPorColor[i];
-            }
-        }
-
-        return indice;
-    }
-
-    public int[] cantidadColor() { // Richard
-        int[] resp = new int[NumeroColores];
-        for (int i = 0; i < tablero.length; i++) {// filas
-            for (int j = 0; j < tablero[i].length; j++) {// columnas
-                for (int k = 0; k < NumeroColores; k++) {
-                    if (k == tablero[i][j]) {
-                        resp[k]++;
-                    }
-                }
-            }
-        }
-        return resp;
-    }
-
     @Override
     public int simularJugada(Casilla jugada) throws IllegalArgumentException {
         // TO - DO
@@ -262,38 +227,38 @@ public class TableroJuego implements Tablero {
     /**
      * Pruebas para el tablero
      */
-    public void generarTableroPrueba() {
+    public void generarTablero() {
         // Generar un n'umero aleatorio entre 2 y 50 para n y m
         int maximo = 49;
         int minimo = 2;
-        int n = (int) (Math.random() * (maximo - minimo + 1) + minimo);
-        int m = (int) (Math.random() * (maximo - minimo + 1) + minimo);
-        System.out.println("n {" + n + "}  m {" + m + "}");
+        this.Filas = (int) (Math.random() * (maximo - minimo + 1) + minimo);
+        this.Columnas = (int) (Math.random() * (maximo - minimo + 1) + minimo);
+        System.out.println("n {" + this.Filas + "}  m {" + this.Columnas + "}");
         // Generar un numero aleatorio de colores para el tablero entre 4 y el numero de
         // casillas
-        minimo = 4;
-        maximo = (n * m) - minimo;
-        // int k = (int)(Math.random() * (maximo - minimo + 1) + minimo);
-        int k = 5; // Por simplicidad de las pruebas, tendr'a 5 colores
-        System.out.println("k {" + k + "}");
+        minimo = 2;
+        maximo = (Filas * Columnas) - minimo;
+        this.NumeroColores = 5; // Por simplicidad de las pruebas, tendr'a 5 colores
+        System.out.println("k {" + this.NumeroColores + "}");
 
         // Crear el tablero
-        int tablero[][] = new int[n][m];
+        
+        this.tablero = new int[this.Filas][this.Columnas];
         // Llenar el tablero aleatoriamente
-        minimo = 1;
-        maximo = k;
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < m; j++) {
+        minimo = 0;
+        maximo = this.NumeroColores-1;
+        for (int i = 0; i < this.Filas; i++) {
+            for (int j = 0; j < this.Columnas; j++) {
                 tablero[i][j] = (int) (Math.random() * (maximo - minimo + 1) + minimo);
             }
         }
         // Imprimir tablero
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < m; j++) {
+        /*for (int i = 0; i < this.Filas; i++) {
+            for (int j = 0; j < this.Columnas; j++) {
                 System.out.print(tablero[i][j] + " ");
             }
             System.out.println();
-        }
+        }*/
 
     }
 
@@ -306,5 +271,16 @@ public class TableroJuego implements Tablero {
             System.out.println(); 
         }
     }
+    @Override
+    public Object clone() throws CloneNotSupportedException{
+        return super.clone();
+    }
 
+    public TableroJuego(int Filas, int Columnas, int NumeroColores) {
+        this.Filas = Filas;
+        this.Columnas = Columnas;
+        this.NumeroColores = NumeroColores;
+        this.tablero = new int[Filas][Columnas];
+    }
+    
 }
