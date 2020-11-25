@@ -10,7 +10,7 @@ public class Main {
     public static void main(String[] args) throws CloneNotSupportedException {
         
         TableroJuego tablero = new TableroJuego();
-        Tablero aux = new TableroJuego(tablero.getFilas(),tablero.getColumnas(),tablero.getNumeroColores());
+        Tablero aux = new TableroJuego(tablero.getFilas(), tablero.getColumnas(), tablero.getNumeroColores());
         for (int i = 0; i < aux.getFilas(); i++) {
             for (int j = 0; j < aux.getColumnas(); j++) {
                 aux.coloresTablero()[i][j] = tablero.coloresTablero()[i][j];

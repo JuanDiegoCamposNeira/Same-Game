@@ -66,10 +66,10 @@ public class TableroJuego implements Tablero {
         int fila = casilla.getFila();
         int columna = casilla.getColumna();
         // Verificar los l'imites de la casilla
-        if (fila < 0 || columna < 0 || fila >= this.Filas || columna >= this.Columnas){
+        if (fila < 0 || columna < 0 || fila >= this.Filas || columna >= this.Columnas) {
             return false;
         }
-        if(this.colorCasilla(fila, columna) == -1)
+        if (this.colorCasilla(fila, columna) == -1)
             return false;
         // Si la casilla es valida verificar vecinos, si al menos un vecino es del mismo
         // color, se retorna verdadero
@@ -192,11 +192,11 @@ public class TableroJuego implements Tablero {
         while (bandera) {
             bandera = false;
             for (int j = 0; j < Columnas; j++) {
-                for (int i = Filas-1; i > 0; i--) {
+                for (int i = Filas - 1; i > 0; i--) {
                     if (tablero[i][j] == -1 && tablero[i - 1][j] != -1) {
                         tablero[i][j] = tablero[i - 1][j];
                         tablero[i - 1][j] = -1;
-                        bandera=true;
+                        bandera = true;
                     }
                 }
             }
@@ -242,37 +242,36 @@ public class TableroJuego implements Tablero {
         System.out.println("k {" + this.NumeroColores + "}");
 
         // Crear el tablero
-        
+
         this.tablero = new int[this.Filas][this.Columnas];
         // Llenar el tablero aleatoriamente
         minimo = 0;
-        maximo = this.NumeroColores-1;
+        maximo = this.NumeroColores - 1;
         for (int i = 0; i < this.Filas; i++) {
             for (int j = 0; j < this.Columnas; j++) {
                 tablero[i][j] = (int) (Math.random() * (maximo - minimo + 1) + minimo);
             }
         }
         // Imprimir tablero
-        /*for (int i = 0; i < this.Filas; i++) {
-            for (int j = 0; j < this.Columnas; j++) {
-                System.out.print(tablero[i][j] + " ");
-            }
-            System.out.println();
-        }*/
+        /*
+         * for (int i = 0; i < this.Filas; i++) { for (int j = 0; j < this.Columnas;
+         * j++) { System.out.print(tablero[i][j] + " "); } System.out.println(); }
+         */
 
     }
 
     public void imprimirTablero() {
-        System.out.println(); 
+        System.out.println();
         for (int i = 0; i < this.Filas; i++) {
-            for (int j = 0; j < this.Columnas; j++) { 
+            for (int j = 0; j < this.Columnas; j++) {
                 System.out.print(this.tablero[i][j] + " ");
             }
-            System.out.println(); 
+            System.out.println();
         }
     }
+
     @Override
-    public Object clone() throws CloneNotSupportedException{
+    public Object clone() throws CloneNotSupportedException {
         return super.clone();
     }
 
@@ -282,5 +281,5 @@ public class TableroJuego implements Tablero {
         this.NumeroColores = NumeroColores;
         this.tablero = new int[Filas][Columnas];
     }
-    
+
 }

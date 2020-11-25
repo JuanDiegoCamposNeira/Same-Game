@@ -10,34 +10,34 @@ public class JugadorSolucion implements Jugador {
 
     @Override
     public List<Casilla> jugar(Tablero tablero) {
-        int[] cantidadPorColor = cantidadColor(tablero); 
+        int[] cantidadPorColor = cantidadColor(tablero);
         int colorMax = colorMaximo(cantidadPorColor, tablero);
         System.out.println("Color mas grande: " + colorMax);
         int contador;
         Boolean posiblesJugadas = false;
         List<Casilla> retornar = new ArrayList<>();
-        do{
+        do {
             contador = 0;
             for (int i = 0; i < tablero.getFilas(); i++) {
                 for (int j = 0; j < tablero.getColumnas(); j++) {
-                    Casilla casilla = new Casilla(i,j);
-                    if(tablero.coloresTablero()[i][j] != colorMax && casillaValida(casilla,tablero)){
+                    Casilla casilla = new Casilla(i, j);
+                    if (tablero.coloresTablero()[i][j] != colorMax && casillaValida(casilla, tablero)) {
                         tablero.efectuarJugada(casilla);
                         retornar.add(casilla);
                         contador++;
-                    }
-                    else if(tablero.coloresTablero()[i][j] == colorMax && posiblesJugadas && casillaValida(casilla,tablero)){
+                    } else if (tablero.coloresTablero()[i][j] == colorMax && posiblesJugadas
+                            && casillaValida(casilla, tablero)) {
                         tablero.efectuarJugada(casilla);
                         retornar.add(casilla);
                         contador++;
                     }
                 }
             }
-            if(contador == 0 && posiblesJugadas == false){
+            if (contador == 0 && posiblesJugadas == false) {
                 posiblesJugadas = true;
                 contador = 1;
             }
-        }while(contador != 0);
+        } while (contador != 0);
         return retornar;
     }
 
@@ -45,8 +45,8 @@ public class JugadorSolucion implements Jugador {
     public String identificacionJugador() {
         return "LosCompadres-Mudkip";
     }
-    
-    public int colorMaximo(int[] cantidadPorColor,Tablero tablero) { // Gabriel
+
+    public int colorMaximo(int[] cantidadPorColor, Tablero tablero) { // Gabriel
 
         int mayor = 0, indice = 0;
         for (int i = 0; i < tablero.getNumeroColores(); i++) {
@@ -71,6 +71,7 @@ public class JugadorSolucion implements Jugador {
         }
         return resp;
     }
+
     public boolean casillaValida(Casilla casilla, Tablero tablero) { // Juan Diego
         // Obtener la posici'on de la casilla
         int fila = casilla.getFila();
@@ -79,7 +80,7 @@ public class JugadorSolucion implements Jugador {
         if (fila < 0 || columna < 0 || fila >= tablero.getFilas() || columna >= tablero.getColumnas()) {
             return false;
         }
-        if(tablero.coloresTablero()[fila][columna] == -1)
+        if (tablero.coloresTablero()[fila][columna] == -1)
             return false;
         // Si la casilla es valida verificar vecinos, si al menos un vecino es del mismo
         // color, se retorna verdadero
